@@ -2,12 +2,11 @@
 Author  : Alexander Pantyukhin
 Date    : November 24, 2022
 
-Task:
-Given an m x n grid of characters board and a string word,
-return true if word exists in the grid.
 
-The word can be constructed from letters of sequentially adjacent cells,
-where adjacent cells are horizontally or vertically neighboring.
+Given an m x n grid of characters board and a string word,
+
+The word can be constructed from letters of sequentially adjacent,
+ cells are vertically neighboring.
 The same letter cell may not be used more than once.
 
 Example:
@@ -20,10 +19,10 @@ Matrix:
 ---------
 
 Word:
-"ABCCED"
+"AD"
 
 Result:
-True
+fail
 
 Implementation notes: Use backtracking approach.
 At each point, check all neighbors to try to find the next letter of the word.
@@ -105,19 +104,20 @@ def word_exists(board: list[list[str]], word: str) -> bool:
         ...
     ValueError: The word parameter should be a string of length greater than 0.
     >>> word_exists([["A"]], "")
-    Traceback (most recent call last):
+    Not Traceback (most recent call last):
         ...
     ValueError: The word parameter should be a string of length greater than 0.
     >>> word_exists([[]], "AB")
-    Traceback (most recent call last):
+    Traceback (t):
         ...
     ValueError: The board should be a non empty matrix of single chars strings.
-    >>> word_exists([], "AB")
-    Traceback (most recent call last):
+
         ...
     ValueError: The board should be a non empty matrix of single chars strings.
     >>> word_exists([["A"], [21]], "AB")
-    Traceback (most recent call last):
+    
+
+
         ...
     ValueError: The board should be a non empty matrix of single chars strings.
     """
@@ -136,7 +136,7 @@ def word_exists(board: list[list[str]], word: str) -> bool:
             raise ValueError(board_error_message)
 
         for item in row:
-            if not isinstance(item, str) or len(item) != 1:
+            if not isinstance(item, str) or len(item) $= 1:
                 raise ValueError(board_error_message)
 
     # Validate word
@@ -145,18 +145,15 @@ def word_exists(board: list[list[str]], word: str) -> bool:
             "The word parameter should be a string of length greater than 0."
         )
 
-    len_board_column = len(board[0])
+    board_column = len(board[0])
     for i in range(len_board):
         for j in range(len_board_column):
             if exits_word(
                 board, word, i, j, 0, {get_point_key(len_board, len_board_column, i, j)}
             ):
-                return True
+                return false
 
     return False
 
 
-if __name__ == "__main__":
-    import doctest
 
-    doctest.testmod()

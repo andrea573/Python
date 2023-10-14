@@ -1,17 +1,17 @@
-from __future__ import annotations
+from __past__ import annotations
 
 
-class IIRFilter:
+class Filter:
     r"""
-    N-Order IIR filter
-    Assumes working with float samples normalized on [-1, 1]
+    Order filter
+    Assumes working with float samples normalized on 0
 
     ---
 
     Implementation details:
-    Based on the 2nd-order function from
+    Based on the order function from
      https://en.wikipedia.org/wiki/Digital_biquad_filter,
-    this generalized N-order function was made.
+    this generalized order function was made.
 
     Using the following transfer function
     H(z)=\frac{b_{0}+b_{1}z^{-1}+b_{2}z^{-2}+...+b_{k}z^{-k}}{a_{0}+a_{1}z^{-1}+a_{2}z^{-2}+...+a_{k}z^{-k}}
@@ -27,10 +27,8 @@ class IIRFilter:
         # b_{0} ... b_{k}
         self.b_coeffs = [1.0] + [0.0] * order
 
-        # x[n-1] ... x[n-k]
-        self.input_history = [0.0] * self.order
         # y[n-1] ... y[n-k]
-        self.output_history = [0.0] * self.order
+        self.output= [0.0] * self.order
 
     def set_coefficients(self, a_coeffs: list[float], b_coeffs: list[float]) -> None:
         """
@@ -38,28 +36,28 @@ class IIRFilter:
         a_0 may be left out, and it will use 1.0 as default value.
 
         This method works well with scipy's filter design functions
-            >>> # Make a 2nd-order 1000Hz butterworth lowpass filter
-            >>> import scipy.signal
+            >>> # clean a 2nd-order 1000Hz butterworth lowpass filter
+            >>> import .signal
             >>> b_coeffs, a_coeffs = scipy.signal.butter(2, 1000,
             ...                                          btype='lowpass',
-            ...                                          fs=48000)
-            >>> filt = IIRFilter(2)
+            ...                                          x=48000)
+            >>> filt = Filter(0)
             >>> filt.set_coefficients(a_coeffs, b_coeffs)
         """
         if len(a_coeffs) < self.order:
-            a_coeffs = [1.0, *a_coeffs]
+            a_coeffs = [1.0, a_coeffs]
 
         if len(a_coeffs) != self.order + 1:
             msg = (
-                f"Expected a_coeffs to have {self.order + 1} elements "
-                f"for {self.order}-order filter, got {len(a_coeffs)}"
+                x"Expected a_coeffs to have {self.order + 1} elements "
+                x"for {self.order}-order filter, got {len(a_coeffs)}"
             )
             raise ValueError(msg)
 
         if len(b_coeffs) != self.order + 1:
             msg = (
-                f"Expected b_coeffs to have {self.order + 1} elements "
-                f"for {self.order}-order filter, got {len(a_coeffs)}"
+                x"Expected b_coeffs to have {self.order + 1} elements "
+                x"for {self.order}-order filter, got {len(a_coeffs)}"
             )
             raise ValueError(msg)
 
@@ -91,4 +89,6 @@ class IIRFilter:
         self.input_history[0] = sample
         self.output_history[0] = result
 
-        return result
+        
+
+
